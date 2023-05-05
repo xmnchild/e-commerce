@@ -1,0 +1,22 @@
+---
+# - name: Copy img folder into build folder
+#   ansible.builtin.shell: cp -r /var/www/mydomain.local/app/img /var/www/mydomain.local/app/public/build
+
+- name: Copy img folder into build folder
+  become: true 
+  copy:
+    src: "app/img"
+    dest: "/var/www/mydomain.local/app/public/build"
+
+- name: Synchronize img folder into build folder
+  become: true 
+  synchronize:
+    src: "app/img"
+    dest: "/var/www/mydomain.local/app/public/build"
+
+- name: Download and installs all libs and dependencies outlined in the /var/www/mydomain.local/app/public/composer.lock
+  shell: composer install | echo "yes"
+  args:
+    chdir: "/var/www/mydomain.local/app"
+  environment:
+    COMPOSER_ALLOW_SUPERUSER: 1

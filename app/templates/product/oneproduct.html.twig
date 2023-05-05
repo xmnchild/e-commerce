@@ -1,0 +1,91 @@
+
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+    <head>
+      <link rel="icon" type="image/x-icon" href="{{ asset('build/img/logowt.svg') }}">
+    <title>Product</title>
+    </head>
+
+{% block body %}
+  <nav class="flex items-center justify-between p-6 bg-white border-0">
+    <div class="flex items-center flex-shrink-0 text-[#74B0E1] mr-6">
+      <a class="font-semibold text-2xl  mb-1 " href="{{ path('home')}}">Techtonic</a>
+    </div>
+    <div class="block">
+    </div>
+    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+      <div class="text-md lg:flex-grow">
+          <a href="{{ path('product')}}" class="block mt-8 lg:inline-block lg:mt-0 text-gray-400 hover:text-[#74B0E1] mr-6">
+              Products
+          </a>
+      </div>
+      <div>
+        {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+          <div class="flex justify-center">
+            {% if cart is not null and cart.productCarts is not empty and is_granted('ROLE_USER') %}
+              <span class="relative flex h-2 w-2 -ml-4 pr-4">
+                <span class="animate-ping absolute  h-2  w-2 rounded-full bg-sky-400 opacity-75"></span>
+                <span class="absolute rounded-full  h-2 w-2 bg-sky-500"></span>
+              </span>
+              {% endif %}
+        <a href="{{ path('cart')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+          <img src="{{ asset('build/img/cart.png') }}" style="width:30px;">
+          </a>
+
+
+          <a href="{{ path('orders')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+          <img src="{{ asset('build/img/order.png') }}" style="width:30px;">
+          </a>
+
+            <a href="{{ path('user')}}" class="inline-block mr-6 w-8 h-8">
+              <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+            </a>
+          {% else %}
+            <a href="{{ path('login')}}" class="inline-block mr-6 w-8 h-8">
+              <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+            </a>
+            </div>
+          {% endif %}
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="bg-[#74B0E1] h-screen flex justify-center items-center">
+    <div class="bg-white shadow-md rounded-md p-8 m-8 flex gap-8">
+      <div class="flex-shrink-0 w-1/3 flex justify-center items-center">
+        <img src="{{ product.photo }}" alt="{{ product.name }}" class="w-64 h-64 object-cover rounded-md">
+      </div>
+  
+      <div class="ml-20 flex-1 flex flex-col justify-between">
+        </div>
+        <div class="flex justify-end">
+          <div class="text-right">
+          <h2 class="text-2xl text-[#74B0E1] font-semibold">{{ product.name }}</h2>
+          <div class="flex justify-end">
+            <p class=" text-[#74B0E1] font-bold text-lg mt-4">${{ product.price }}</p>
+          </div>
+          <div class="flex justify-center">
+            <div>
+              <p class="text-gray-400 text-md mt-2 line-clamp-2">{{ product.description }}</p>
+              </div>
+          </div>
+          <div class="flex justify-end">
+            <form method="post" action="{{ path('add_to_cart', {'productId': product.id}) }}" class="addcart-form mt-8" data-product-id="{{ product.id }}">
+              <input type="hidden" name="product_name" value="{{ product.name }}">
+              <button class="bg-[#74B0E1] text-sm rounded-lg p-2" type="submit"><img src="{{ asset('build/img/cartwt.png') }}" style="width:40px"/></button>
+              </div>
+                             
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

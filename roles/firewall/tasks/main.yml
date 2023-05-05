@@ -1,0 +1,11 @@
+---
+- name: Install ufw
+  apt:
+    name: ufw
+    state: present
+
+- name: "UFW firewall allow HTTP on port {{ http_port }}"
+  ufw:
+    rule: allow
+    port: "{{ http_port }}"
+    proto: tcp

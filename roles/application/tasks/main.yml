@@ -1,0 +1,94 @@
+---
+- name: Create document root for domain configured in host variable  
+  file:
+    path: "/var/www/{{ http_host }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: copying application repository in the /var/www/{{ http_host }}/
+  become: true 
+  synchronize:
+    src: "app"
+    dest: "/var/www/{{ http_host }}"
+
+- name: Download and installs all libs and dependencies outlined in the /var/www/mydomain.local/app/public/composer.lock
+  shell: composer install --no-interaction --optimize-autoloader --no-dev --ignore-platform-reqs >/dev/null 2>&1 &
+  args:
+    chdir: "/var/www/mydomain.local/app"
+  environment:
+    COMPOSER_ALLOW_SUPERUSER: 1
+
+- name: Download and installs all libs and dependencies outlined in the /var/www/mydomain.local/app/public/composer.lock
+  shell: composer install | echo "yes"
+  args:
+    chdir: "/var/www/mydomain.local/app"
+  environment:
+    COMPOSER_ALLOW_SUPERUSER: 1
+
+# - name: Download and installs all libs and dependencies outlined in the /var/www/mydomain.local/app/public/composer.lock
+#   shell: composer update --no-interaction --optimize-autoloader --no-dev --ignore-platform-reqs
+#   args:
+#     chdir: "/var/www/mydomain.local/app"
+#   environment:
+#     COMPOSER_ALLOW_SUPERUSER: 1
+
+- name: installation sudo apt install php-mysql
+  shell: cd ../var/www/mydomain.local/app && echo yes | sudo apt install php-mysql
+  args:
+    executable: /bin/bash
+
+- name: Créer l'utilisateur dans MariaDB
+  mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    login_user: root
+    login_password: votre_mot_de_passe_root
+    priv: "{{ db_name }}.*:ALL"
+    state: present
+
+- name: Create a new database with name 'db_name'
+  shell: php bin/console doctrine:database:create --if-not-exists
+  args:
+    chdir: /var/www/mydomain.local/app
+
+# - name: installation make:migration
+#   shell: php bin/console make:migration --no-interaction
+#   args:
+#     chdir: /var/www/mydomain.local/app
+  
+# - name: installation doctrine:migrations:migrate
+#   shell: php bin/console doctrine:migrations:migrate --no-interaction 
+#   args:
+#     chdir: /var/www/mydomain.local/app
+
+# - name: >
+#     Dump of Databse with specific latin1 encoding,
+#     similar to mysqldump -u <db_user> --default-character-set=latin1 -p <db_password> <db_name>
+#   community.mysql.mysql_db:
+#     state: import
+#     name: db_name
+#     encoding: latin1
+#     target: /var/www/mydomain.local/app/dump.sql
+
+# - name: copying application repository in the /var/www/{{ http_host }}/
+#   become: true 
+#   copy:
+#     src: "app/admin_user.sql"
+#     dest: "/var/www/mydomain.local/app"
+
+
+- name: >
+    Dump of Databse with specific latin1 encoding,
+    similar to mysqldump -u <db_user> --default-character-set=latin1 -p <db_password> <db_name>
+  community.mysql.mysql_db:
+    state: import
+    name: db_name
+    encoding: latin1
+    target: /var/www/mydomain.local/app/admin_user.sql
+
+
+
+
+

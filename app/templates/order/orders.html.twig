@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" type="image/x-icon" href="{{ asset('build/img/logowt.svg') }}">
+    <meta charset="UTF-8">
+    <title>Orders</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+
+
+  {% block body %}
+    <nav class="flex items-center justify-between  p-6 bg-white border-0">
+      <div class="flex items-center flex-shrink-0 text-[#74B0E1] mr-6">
+        <a class="font-semibold text-2xl mb-1 " href="{{ path('home')}}">Techtonic</a>
+      </div>
+      <div class="block">
+      </div>
+      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+        <div class="text-md lg:flex-grow">
+            <a href="{{ path('product')}}" class="block mt-8 lg:inline-block lg:mt-0 text-gray-400 hover:text-[#74B0E1] mr-6">
+                Products
+            </a>
+        </div>
+        <div>
+          {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+            <div class="flex justify-center">
+          <a href="{{ path('cart')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+            <img src="{{ asset('build/img/cart.png') }}" style="width:30px;">
+            </a>
+  
+  
+            <a href="{{ path('orders')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+            <img src="{{ asset('build/img/order.png') }}" style="width:30px;">
+            </a>
+  
+              <a href="{{ path('user')}}" class="inline-block mr-6 w-8 h-8">
+                <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+              </a>
+            {% else %}
+              <a href="{{ path('login')}}" class="inline-block mr-6 w-8 h-8">
+                <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+              </a>
+              </div>
+            {% endif %}
+  
+        </div>
+      </div>
+    </nav>
+
+    <div class="bg-[#74B0E1] min-h-screen flex flex-col items-center justify-center">
+      <div class="bg-white shadow-md rounded-md p-8 m-8 w-full sm:w-1/2">
+      <div class="flex justify-center">
+        <h1 class="text-2xl text-[#74B0E1] font-bold mb-4">Your orders</h1>
+        </div>
+        {% if orders is not null and orders is not empty %}
+        <ul>
+          {% for order in orders %}
+            <div class="border my-4  border-gray-300 rounded-md shadow-sm p-4 flex items-center justify-between">
+            <div class="flex items-center">
+              <div>
+                <h2 class="text-lg text-[#74B0E1] font-medium"># {{ loop.index }}</h2>
+                <p class="text-gray-400 font-semibold text-sm">Total Price : {{ order.totalPrice }}$</p>
+                <p class="text-gray-400 text-sm">Placed on: {{ order.createdAt|date('m/d/Y H:i:s') }}</p>
+                <div class="flex items-end">
+                <form action="{{ path('oneorder', {'orderId': order.id}) }}">
+                  <button type="submit" class=" text-gray-400 rounded-lg font-bold">
+                    View order
+                  </button>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </ul>
+        <div class="flex justify-end">
+        </div>
+        {% else %}
+          <div class="flex justify-center flex-col items-center m-8">
+              <img src="{{ asset('build/img/sad.png') }}" style="width:50px">
+              <p class="text-md text-gray-400 font-semibold mt-6">Oh no. Looks like you haven't placed any orders yet.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endblock %}
+    </html>
+    
+    
+    
+    
+    
+    
+    

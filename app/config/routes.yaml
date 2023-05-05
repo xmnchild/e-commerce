@@ -1,0 +1,18 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+api_login_check:
+    path: /api/login_check
+
+api_refresh_token:
+    path: /api/token/refresh
+
+# app_logout:
+#     path: /logout
+#     methods: GET
+
+# api_token_invalidate:
+#     path: /api/token/invalidate

@@ -1,0 +1,26 @@
+---
+- name: Added repository to install PHP 8.2
+  shell: curl -sSL https://packages.sury.org/php/README.txt | sudo bash -x
+  args:
+    executable: /bin/bash
+
+- name: Install PHP 8.2
+  apt:
+    name:
+      - php8.2
+      - php8.2-xml
+      - php8.2-curl
+      - php8.2-fpm
+    state: present
+
+- name: Install Apache module for PHP 8.2
+  apt:
+    name:
+      - libapache2-mod-php
+    state: present
+
+- name: Enable PHP module in Apache
+  apache2_module:
+    name: php
+    state: present
+  become: yes

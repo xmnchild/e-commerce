@@ -1,0 +1,50 @@
+---
+- name: Install the gpg key for nodejs LTS
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    state: present
+
+- name: Install the nodejs LTS repos
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_19.x {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+
+- name: Install the nodejs
+  apt:
+    name: nodejs
+    state: present
+
+- name: Ensure apt-transport-https is installed
+  apt:
+    name: apt-transport-https
+
+- name: Add Yarn apt key
+  apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+
+- name: Add Yarn repository
+  apt_repository:
+    repo: "deb https://dl.yarnpkg.com/debian/ stable main"
+    filename: yarn
+
+- name: Install Yarn
+  apt:
+    name: yarn
+
+- name: Install packages based on package.json.
+  npm:
+    path: /var/www/mydomain.local/app
+
+- name: Update packages based on package.json to their latest version.
+  npm:
+    path: /var/www/mydomain.local/app
+    state: latest
+
+# - name: Run build process
+#   shell: nohup npm run watch </dev/null >/dev/null 2>&1 &
+#   args:
+#     chdir: "/var/www/mydomain.local/app"
+
+- name: Run build process
+  ansible.builtin.shell: cd /var/www/mydomain.local/app; nohup yarn run watch >/dev/null 2>&1 &

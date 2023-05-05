@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="icon" type="image/x-icon" href="{{ asset('build/img/logowt.svg') }}">
+        <meta charset="UTF-8">
+        <title>Techtonic</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+	<body
+		class="bg-white">
+        <nav class="flex items-center justify-between p-6 bg-white border-0">
+            <div class="flex items-center flex-shrink-0 text-[#74B0E1] mr-6">
+              <a class="font-semibold text-2xl mb-1 " href="{{ path('home')}}">Techtonic</a>
+            </div>
+            <div class="block">
+            </div>
+            <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+              <div class="text-md lg:flex-grow">
+                  <a href="{{ path('product')}}" class="block mt-8 lg:inline-block lg:mt-0 text-gray-400 hover:text-[#74B0E1] mr-6">
+                      Products
+                  </a>
+              </div>
+              <div>
+                {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+                  <div class="flex justify-center">
+                    {% if cart is not null and cart.productCarts is not empty and is_granted('ROLE_USER') %}
+                      <span class="relative flex h-2 w-2 -ml-4 pr-4">
+                        <span class="animate-ping absolute  h-2  w-2 rounded-full bg-sky-400 opacity-75"></span>
+                        <span class="absolute rounded-full  h-2 w-2 bg-sky-500"></span>
+                      </span>
+                      {% endif %}
+                <a href="{{ path('cart')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+                  <img src="{{ asset('build/img/cart.png') }}" style="width:30px;">
+                  </a>
+        
+        
+                  <a href="{{ path('orders')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+                  <img src="{{ asset('build/img/order.png') }}" style="width:30px;">
+                  </a>
+                    </div>
+                  {% endif %}
+        
+              </div>
+            </div>
+          </nav>
+
+		<!-- Hero section -->
+			<section class="py-20 mx-22 px-4 text-center bg-[#74B0E1]">
+				<h1 class="text-4xl text-white font-bold mb-1">Find your perfect match</h1>
+				<p class="text-md text-white mb-8">From hobbyists to professionals, we've got you covered.</p>
+				<a class="bg-white rounded-md shadow-md text-[#74B0E1] p-4" href="{{ path('product')}}">See our products</a>
+			</section>
+
+		<!-- Features section -->
+		<section class="py-20">
+    <div class="flex justify-around items-center gap-8">
+        <p class="text-3xl font-bold mb-8 text-center text-[#74B0E1]">Best selling products</p>
+        {% for product in featuredProducts %}
+        <div class="sm:w-1/2 md:w-1/3 p-6 text-[#74B0E1]">
+            <div class="rounded-lg shadow-lg p-8">
+                <h3 class="text-xl font-bold mb-4">{{ product.name }}</h3>
+                <p class="mb-4 text-gray-400 ">{{ product.description }}</p>
+				<div class="flex justify-center">
+					<a href="{{ path('productid', {productId: product.id}) }}" class="bg-[#74B0E1]  text-white py-2 px-4 rounded">View product</a>
+
+				</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{# <footer class="bg-[#74B0E1] text-white py-8 flex justify-center p-8">
+            <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                <h3 class="text-sm font-bold mb-2">Links</h3>
+                <ul class="list-none text-xs">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                <h3 class="text-sm font-bold mb-2">Social</h3>
+                <ul class="list-none text-xs">
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="w-full md:w-1/4">
+                <h3 class="text-sm font-bold mb-2">Newsletter</h3>
+                <p class="text-xs mb-2">Sign up to receive updates and special offers.</p>
+            </div>
+        </div>
+    </div>
+</footer> #}
+    </body>

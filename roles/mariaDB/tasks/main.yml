@@ -1,0 +1,20 @@
+---  
+- name: Install the latest version of MariaDB
+  ansible.builtin.package:
+    name:
+      - mariadb-server
+    state: latest
+    update_cache: yes
+
+- name: Start and enable the MariaDB service
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: "Install ansible python3 mysql dependency"
+  apt:
+    name: python3-mysqldb
+    state: latest
+
+

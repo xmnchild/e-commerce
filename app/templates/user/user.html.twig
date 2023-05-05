@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" type="image/x-icon" href="{{ asset('build/img/logobg.svg') }}">
+        <meta charset="UTF-8">
+        <title>{% block title %}User Profile{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body class="bg-[#74B0E1]">
+        {% block body %}
+            <nav class="flex items-center justify-between p-6 bg-white border-0">
+                <div class="flex items-center flex-shrink-0 text-[#74B0E1] mr-6">
+                  <a class="font-semibold text-2xl mb-1 " href="{{ path('home')}}">Techtonic</a>
+                </div>
+                <div class="block">
+                </div>
+                <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+                  <div class="text-md lg:flex-grow">
+                      <a href="{{ path('product')}}" class="block mt-8 lg:inline-block lg:mt-0 text-gray-400 hover:text-[#74B0E1] mr-6">
+                          Products
+                      </a>
+                  </div>
+                  <div>
+                    {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+                      <div class="flex justify-center">
+                        {% if cart is not null and cart.productCarts is not empty and is_granted('ROLE_USER') %}
+                          <span class="relative flex h-2 w-2 -ml-4 pr-4">
+                            <span class="animate-ping absolute  h-2  w-2 rounded-full bg-sky-400 opacity-75"></span>
+                            <span class="absolute rounded-full  h-2 w-2 bg-sky-500"></span>
+                          </span>
+                          {% endif %}
+                    <a href="{{ path('cart')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+                      <img src="{{ asset('build/img/cart.png') }}" style="width:30px;">
+                      </a>
+            
+            
+                      <a href="{{ path('orders')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+                      <img src="{{ asset('build/img/order.png') }}" style="width:30px;">
+                      </a>
+            
+                        <a href="{{ path('user')}}" class="inline-block mr-6 w-8 h-8">
+                          <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+                        </a>
+                      {% else %}
+                        <a href="{{ path('login')}}" class="inline-block mr-6 w-8 h-8">
+                          <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+                        </a>
+                        </div>
+                      {% endif %}
+            
+                  </div>
+                </div>
+              </nav>
+            <div class="w-screen bg-[#74B0E1] flex justify-center items-center content-center h-screen">
+
+                {{ form_start(userForm, {'method': 'POST'}) }}                    {# {{ form_row(registrationForm._token) }} #}
+            <form>
+                <div class="flex text-white text-2xl font-medium justify-center items-end content-end">
+                    <h3>Hey, this is your profile page</h3>
+                </div>
+                <div class="flex justify-center">
+                    <h2 class="block mb-8 text-3xl font-medium text-[#74B0E1] dark:text-white">Your profile page</h2>
+                </div>
+                <div class="flex gap-8">
+                    <div class="basicinfo border rounded-md  bg-white shadow-lg p-12 w-full h-full flex-1">
+                        <h3 class= 'block mb-8 text-xl font-medium text-[#74B0E1] dark:text-white'>Change your information</h3>
+                    <div class="flex flex-row gap-8">
+                        <div class="mb-6">
+                            {{ form_label(userForm.firstname, 'Your first name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+                            {{ form_widget(userForm.firstname, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'value': user.firstname}}) }}
+                            {{ form_errors(userForm.firstname, {'attr': {'class': 'text-red'}}) }}
+                        </div>    
+                        <div class="mb-6">
+                            {{ form_label(userForm.lastname, 'Your last name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+                            {{ form_widget(userForm.lastname, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'value': user.lastname}}) }}
+                            {{ form_errors(userForm.lastname, {'attr': {'class': 'text-red'}}) }}
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        {{ form_label(userForm.username, 'Your username', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+                        {{ form_widget(userForm.username, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'value': user.username}}) }}
+                        {{ form_errors(userForm.username, {'attr': {'class': 'text-red'}}) }}
+                    </div>
+                    <div class="mb-6">
+                        {{ form_label(userForm.email, 'Your email', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+                        {{ form_widget(userForm.email, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'value': user.email}}) }}
+                        {{ form_errors(userForm.email, {'attr': {'class': 'text-red'}}) }}
+                    </div>
+                    <div class="flex justify-center mb-8">
+                        {{ form_widget(userForm.save, {'label': 'Change your info', 'attr': {'class': 'text-white bg-[#74B0E1] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'}}) }}    
+                    </div>
+                    </div>
+
+                <div class="border rounded-md bg-white shadow-lg p-12 w-full  flex-1">
+                    <div class="mb-6">
+                        <h3 class= 'block mb-6 text-xl font-medium text-[#74B0E1] dark:text-white'>Change your password</h3>
+                        {{ form_label(userForm.oldPassword, 'Old password', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+                        {{ form_widget(userForm.oldPassword, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'placeholder': "Type your old password"}}) }}
+                        {{ form_errors(userForm.oldPassword, {'attr': {'class': 'text-red'}}) }}
+                    </div>
+                    <div class="mb-6">
+                        {{ form_label(userForm.newPassword, 'Type your new password', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+                        {{ form_widget(userForm.newPassword, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'placeholder': "Type your new password"}}) }}
+                        {{ form_errors(userForm.newPassword, {'attr': {'class': 'text-red'}}) }}
+                    </div>
+                    <div class="mb-6">
+                        {{ form_label(userForm.confirmPassword, 'Confirm new password', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+                        {{ form_widget(userForm.confirmPassword, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'placeholder': "Confirm your new password"}}) }}
+                        {{ form_errors(userForm.confirmPassword, {'attr': {'class': 'text-red'}}) }}
+                    </div>
+                    <div class="flex justify-center">
+                        {{ form_widget(userForm.change_password, {'label': 'Change password', 'attr': {'class': 'text-white bg-[#74B0E1] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'}}) }}    
+                    </div>
+                </div>
+            </form>
+        {{ form_end(userForm) }}
+        </div>
+        {% endblock %}
+    </body>
+</html>

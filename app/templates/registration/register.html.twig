@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" type="image/x-icon" href="{{ asset('build/img/logowt.svg') }}">
+        <meta charset="UTF-8">
+        <title>{% block title %}Register{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body class="bg-[#74B0E1]">
+        {% block body %}
+            <nav class="flex items-center justify-between p-6 bg-white border-0">
+                <div class="flex items-center flex-shrink-0 text-[#74B0E1] mr-6">
+                  <a class="font-semibold text-2xl mb-1 " href="{{ path('home')}}">Techtonic</a>
+                </div>
+                <div class="block">
+                </div>
+                <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+                  <div class="text-md lg:flex-grow">
+                      <a href="{{ path('product')}}" class="block mt-8 lg:inline-block lg:mt-0 text-gray-400 hover:text-[#74B0E1] mr-6">
+                          Products
+                      </a>
+                  </div>
+                  <div>
+                    {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+                      <div class="flex justify-center">
+                        {% if cart is not null and cart.productCarts is not empty and is_granted('ROLE_USER') %}
+                          <span class="relative flex h-2 w-2 -ml-4 pr-4">
+                            <span class="animate-ping absolute  h-2  w-2 rounded-full bg-sky-400 opacity-75"></span>
+                            <span class="absolute rounded-full  h-2 w-2 bg-sky-500"></span>
+                          </span>
+                          {% endif %}
+                    <a href="{{ path('cart')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+                      <img src="{{ asset('build/img/cart.png') }}" style="width:30px;">
+                      </a>
+            
+            
+                      <a href="{{ path('orders')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+                      <img src="{{ asset('build/img/order.png') }}" style="width:30px;">
+                      </a>
+            
+                        <a href="{{ path('user')}}" class="inline-block mr-6 w-8 h-8">
+                          <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+                        </a>
+                      {% else %}
+                        <a href="{{ path('login')}}" class="inline-block mr-6 w-8 h-8">
+                          <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+                        </a>
+                        </div>
+                      {% endif %}
+            
+                  </div>
+                </div>
+              </nav>
+
+
+
+
+            <div class="flex justify-center items-center content-center">
+                <div class="border rounded-md bg-white shadow-lg p-12 m-12 mt-8">
+                    {{ form_start(registrationForm) }}
+                    {# {{ form_row(registrationForm._token) }} #}
+
+            <form>
+                <div class="flex justify-center">
+                <img src="{{ asset('build/img/logowt.svg') }}" alt="techtonic">
+                </div>
+
+        <div class="flex justify-center">
+            <span class="text-3xl font-bold mb-6 text-[#74B0E1]">Register</span>
+        </div>
+        <div class="flex flex-row justify-evenly gap-8">
+            <div class="mb-6">
+                {{ form_label(registrationForm.firstname, 'Your first name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+                {{ form_widget(registrationForm.firstname, {'attr': {'class': 'bg-[#E7F0FE] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'placeholder': 'Jack', 'required': true}}) }}
+                {{ form_errors(registrationForm.firstname, {'attr': {'class': 'my-custom-class'}}) }}
+            </div>    
+        <div class="mb-6">
+            {{ form_label(registrationForm.lastname, 'Your last name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+            {{ form_widget(registrationForm.lastname, {'attr': {'class': 'bg-[#E7F0FE] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'placeholder': 'Sparrow', 'required': true}}) }}
+            {{ form_errors(registrationForm.lastname, {'attr': {'class': 'my-custom-class'}}) }}
+        </div>
+        </div>
+        <div class="mb-6">
+            {{ form_label(registrationForm.username, 'Your username', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+            {{ form_widget(registrationForm.username, {'attr': {'class': 'bg-[#E7F0FE] dark-bg-[#E7F0FE] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'placeholder': 'Pirate', 'required': true}}) }}
+            {{ form_errors(registrationForm.username, {'attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+    </div>
+    <div class="mb-6">
+        {{ form_label(registrationForm.email, 'Your email', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+        {{ form_widget(registrationForm.email, {'attr': {'class': 'bg-[#E7F0FE] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'placeholder': 'jack.sparrow@pirate.com', 'required': true}}) }}
+        {{ form_errors(registrationForm.email, {'attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+    </div>
+    <div class="mb-6">
+        {{ form_label(registrationForm.password, 'Your password', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+        {{ form_widget(registrationForm.password, {'attr': {'class': 'bg-[#E7F0FE] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'placeholder': '*****', 'required': true}}) }}
+        {{ form_errors(registrationForm.password, {'attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+    </div>
+    <div class="flex items-start">
+      <a class="text-xs font-medium -mt-4 mb-8 text-[#74B0E1] dark:text-gray-400" href="/api/login">Already have an account? Log in</a>
+      </div>
+
+    <div class="flex justify-center">
+        {{ form_widget(registrationForm.register, {'label': 'Register', 'attr': {'class': 'text-white bg-[#74B0E1] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'}}) }}    
+    </div>
+    </form>
+    {{ form_end(registrationForm) }}
+
+
+    </div>
+    </div>
+        {% endblock %}
+    </body>
+</html>

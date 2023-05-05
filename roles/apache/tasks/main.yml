@@ -1,0 +1,30 @@
+--- 
+- name: Install Apache 2
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-fcgid
+    state: latest
+    update_cache: yes
+
+# - name: Enable the Apache2 module wsgi
+#   community.general.apache2_module:
+#     state: present
+#     name: "{{ item }}"
+#   with_items:
+#     - proxy
+#     - proxy_fcgi
+#     - rewrite
+
+- name: Remove default Apache2 configuration in the /etc/apache2/sites-enabled/
+  file:
+    path: /etc/apache2/sites-enabled/000-default.conf
+    state: absent
+
+- name: Set up virtuahHost
+  template:
+    src: "app/apache-template.conf"
+    dest: "/etc/apache2/sites-available/{{ http_conf }}"
+
+- name: Enable site
+  command: a2ensite {{ http_conf }}

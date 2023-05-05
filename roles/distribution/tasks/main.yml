@@ -1,0 +1,14 @@
+---
+#- name: Checking the operating system
+#  ansible.builtin.meta: end_host
+#  when: ((ansible_facts['distribution'] != "Debian") or (ansible_facts['distribution_major_version'] != "11"))
+
+- block:
+  - name: Checking the operating system"
+    debug:
+      msg: "Error: Your current version: {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_major_version'] }}, please install Debian 11 to run the playbook"
+  - meta: end_play
+  when:  ((ansible_facts['distribution'] != "Debian") or (ansible_facts['distribution_major_version'] != "11"))
+
+
+    

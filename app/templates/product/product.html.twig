@@ -1,0 +1,111 @@
+
+
+
+
+<head>
+  <link rel="icon" type="image/x-icon" href="{{ asset('build/img/logowt.svg') }}">
+  <title>Our products</title>
+  {% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+
+</head>
+
+{% block body %}
+
+    {% if app.flashes %}
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <nav class="flex items-center justify-between p-6 bg-white border-0">
+      <div class="flex items-center flex-shrink-0 text-[#74B0E1] mr-6">
+        <a class="font-semibold text-2xl  mb-1 " href="{{ path('home')}}">Techtonic</a>
+      </div>
+      <div class="block">
+      </div>
+      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+        <div class="text-md lg:flex-grow">
+            <a href="{{ path('product')}}" class="block mt-8 lg:inline-block lg:mt-0 text-gray-400 hover:text-[#74B0E1] mr-6">
+                Products
+            </a>
+        </div>
+        <div>
+          {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+            <div class="flex justify-center">
+              {% if cart is not null and cart.productCarts is not empty and is_granted('ROLE_USER') %}
+                <span class="relative flex h-2 w-2 -ml-4 pr-4">
+                  <span class="animate-ping absolute  h-2  w-2 rounded-full bg-sky-400 opacity-75"></span>
+                  <span class="absolute rounded-full  h-2 w-2 bg-sky-500"></span>
+                </span>
+                {% endif %}
+          <a href="{{ path('cart')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+            <img src="{{ asset('build/img/cart.png') }}" style="width:30px;">
+            </a>
+  
+  
+            <a href="{{ path('orders')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+            <img src="{{ asset('build/img/order.png') }}" style="width:30px;">
+            </a>
+  
+              <a href="{{ path('user')}}" class="inline-block mr-6 w-8 h-8">
+                <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+              </a>
+            {% else %}
+              <a href="{{ path('login')}}" class="inline-block mr-6 w-8 h-8">
+                <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+              </a>
+              </div>
+            {% endif %}
+  
+        </div>
+      </div>
+    </nav>
+
+    <div class="example-wrapper bg-[#74B0E1]">
+      {% if is_granted('ROLE_ADMIN') %}
+        <div class="flex justify-end px-4 pt-2">
+        <a href="{{ path('add_product') }}" class="text-white cursor-pointer">
+          <img src="{{ asset('build/img/add.png') }}" style="width:30px"/></a>
+        </div>
+    {% endif %}
+    <div class="flex justify-center bg-[#74B0E1]"><h2 class="text-white font-semibold text-2xl mt-4">Our latest products</h2></div>
+        <div class="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-8 p-6   bg-[#74B0E1] w-full">
+            {% for product in products %}
+                <div class="border rounded-md p-4 mb-4 mt-6 ml-6 bg-white">
+                    {% if is_granted('ROLE_ADMIN') %}
+                      <div class="flex justify-between">                        
+                        <a href="{{ path('edit_product', {id: product.id }) }}" class="btn btn-primary"><img src="{{ asset('build/img/edit.png') }}" style="width:25px"/></a>
+                      <form method="post" action="{{ path('delete_product', {'name': product.name}) }}" class="delete-form" data-product-name="{{ product.name }}">
+                          <button type="submit"><img src="{{ asset('build/img/trash.png') }}" style="width:25px"/></button>
+                      </form>       </div>
+      
+                        {% endif %}
+                    <img src="{{ product.photo }}" class="w-full h-48 object-contain mb-2">
+                    <div class="flex justify-between">
+                    <h2 class="text-lg font-bold text-[#74B0E1]">{{ product.name }}</h2>
+                    <p class="text-lg font-bold text-[#74B0E1]">${{ product.price }}</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-4">
+                      <a class=" text-sm text-[#74B0E1]" href="{{ path('productid', {productId: product.id}) }}">See details</a>
+                    <form method="post" action="{{ path('add_to_cart', {'productId': product.id}) }}" class="addcart-form" data-product-id="{{ product.id }}">
+    <input type="hidden" name="product_name" value="{{ product.name }}">
+    <button class="bg-[#74B0E1] text-sm rounded-lg p-2" type="submit"><img src="{{ asset('build/img/cartwt.png') }}" style="width:20px"/></button>
+    </div>
+                    
+</form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+  <link rel="icon" type="image/x-icon" href="{{ asset('build/img/logowt.svg') }}">
+<title>Order {{ order.id }}</title>
+{% block stylesheets %}
+  {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block javascripts %}
+  {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+  </head>
+
+
+{% block body %}
+
+  <nav class="flex items-center justify-between p-6 bg-white border-0">
+    <div class="flex items-center flex-shrink-0 text-[#74B0E1] mr-6">
+      <a class="font-semibold text-2xl  mb-1 " href="{{ path('home')}}">Techtonic</a>
+    </div>
+    <div class="block">
+    </div>
+    <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+      <div class="text-md lg:flex-grow">
+          <a href="{{ path('product')}}" class="block mt-8 lg:inline-block lg:mt-0 text-gray-400 hover:text-[#74B0E1] mr-6">
+              Products
+          </a>
+      </div>
+      <div>
+        {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+          <div class="flex justify-center">
+        <a href="{{ path('cart')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+          <img src="{{ asset('build/img/cart.png') }}" style="width:30px;">
+          </a>
+
+
+          <a href="{{ path('orders')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+          <img src="{{ asset('build/img/order.png') }}" style="width:30px;">
+          </a>
+
+            <a href="{{ path('user')}}" class="inline-block mr-6 w-8 h-8">
+              <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+            </a>
+          {% else %}
+            <a href="{{ path('login')}}" class="inline-block mr-6 w-8 h-8">
+              <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+            </a>
+            </div>
+          {% endif %}
+      </div>
+    </div>
+  </nav>
+
+{# 
+  <div class="bg-[#74B0E1] h-screen flex justify-center items-center">
+    <div class="bg-white shadow-md rounded-md p-8 m-8 flex gap-8">
+      <div class="ml-20 flex-1 flex flex-col justify-between">
+        <div class="flex justify-end">
+            {% for product in products %}
+          <h2 class="text-2xl text-[#74B0E1] font-semibold">Product: {{ product.product.name }}</h2>
+            <p class=" text-[#74B0E1] font-bold text-lg mt-4">Product price: {{ product.product.price }}</p>
+          <div class="flex justify-center">
+              <div>
+                <p class="text-gray-400 text-md mt-2 line-clamp-2">QUantity: {{ product.quantity }}</p>
+                </div>
+          </div>
+        </div>
+
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+ #}
+
+
+
+  <div class="bg-[#74B0E1] min-h-screen flex flex-col items-center justify-center">
+            <div class="bg-white shadow-md rounded-md p-8 m-8 w-full sm:w-1/2">
+            <div class="flex justify-center">
+              <h1 class="text-2xl text-[#74B0E1] font-bold mb-4">Your order summary</h1>
+              </div>
+              <ul>
+                {% for product in products %}
+                <div class="border my-4  border-gray-300 rounded-md shadow-sm p-4 flex items-center justify-between">
+                  <div class="flex items-center">
+                    <img src="{{ product.product.photo }}" alt="{{ product.product.name }}" class="w-20 h-20 object-cover rounded-md mr-4">
+                    <div>
+                      <h2 class="text-lg font-medium">{{ product.product.name }}</h2>
+                      <p class="text-gray-400 text-sm">{{ product.product.price }}$</p>
+                      <p class="text-gray-400 font-semibold text-sm">Quantity: {{ product.quantity }}</p>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                <div class="py-4 border-b border-gray-200 flex items-center justify-between">
+                  <span class="text-lg text-[#74B0E1] font-semibold">Total:</span>
+                  <span class="text-lg text-[#74B0E1] font-bold">{{ order.getTotalPrice() }}$</span>
+                </div>
+                <div class="py-2 flex items-center justify-between">
+                  <span class="text-sm text-gray-400 font-semibold">Placed on: {{ order.createdAt|date('m/d/Y H:i:s') }}</span>
+                </div>
+              </ul>
+              <div class="flex justify-end">
+              </div>
+            </div>
+          </div>
+    {% endblock %}
+
+    </html>

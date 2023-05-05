@@ -1,0 +1,13 @@
+---
+- name: Restart MariaDB
+  become: true
+  service:
+    name: mariadb
+    state: restarted
+
+- name: Restart Apache2
+  become: true
+  service:
+    name: apache2
+    state: restarted
+

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" type="image/x-icon" href="{{ asset('build/img/logowt.svg') }}">
+        <meta charset="UTF-8">
+        <title>Edit Product</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+            <nav class="flex items-center justify-between  p-6 bg-white border-0">
+                <div class="flex items-center flex-shrink-0 text-[#74B0E1] mr-6">
+                  <a class="font-semibold text-2xl  mb-1 " href="{{ path('home')}}">Techtonic</a>
+                </div>
+                <div class="block">
+                </div>
+                <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+                  <div class="text-md lg:flex-grow">
+                      <a href="{{ path('product')}}" class="block mt-8 lg:inline-block lg:mt-0 text-gray-400 hover:text-[#74B0E1] mr-6">
+                          Products
+                      </a>
+                  </div>
+                  <div>
+                    <a href="{{ path('cart')}}" class="inline-block relative mr-6 w-8 h-8 text-gray-400">
+                        <img src="{{ asset('build/img/cart.png') }}" style="width:30px; position: absolute; top: 0; left: 0;">
+                      </a>
+              
+                        <a href="{{ path('user')}}" class="inline-block mr-6 w-8 h-8">
+                          <img src="{{ asset('build/img/user.png') }}" style="width:30px">
+                        </a>
+                  </div>
+                </div>
+              </nav>
+            <div class="bg-[#74B0E1]">
+            <div class="w-full bg-[#74B0E1] flex justify-center items-center content-center h-screen">
+                <div class="border w-5/12 rounded-md bg-white shadow-lg p-12">
+                    {{ form_start(EditProductForm, {'method': 'PUT'}) }}
+                    {# {{ form_row(registrationForm._token) }} #}
+
+            <form method="post">
+                <div class="flex justify-center">
+                </div>
+
+        <div class="flex justify-center">
+            <span class="text-3xl font-bold mb-6 text-[#74B0E1]">Edit a product</span>
+        </div>
+        <div class="mb-6">
+            {{ form_label(EditProductForm.name, 'name', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+            {{ form_widget(EditProductForm.name, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'required': true}}) }}
+            {{ form_errors(EditProductForm.name, {'attr': {'class': 'my-custom-class'}}) }}
+    </div>
+    <div class="mb-6">
+        {{ form_label(EditProductForm.description, 'description', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+        {{ form_widget(EditProductForm.description, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'required': true}}) }}
+        {{ form_errors(EditProductForm.description, {'attr': {'class': 'my-custom-class'}}) }}
+    </div>
+    <div class="mb-6">
+        {{ form_label(EditProductForm.photo, 'link to photo', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+        {{ form_widget(EditProductForm.photo, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'required': true}}) }}
+        {{ form_errors(EditProductForm.photo, {'attr': {'class': 'my-custom-class'}}) }}
+    </div>
+    <div class="mb-6">
+        {{ form_label(EditProductForm.price, 'price', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-[#74B0E1] dark:text-white'}}) }}
+        {{ form_widget(EditProductForm.price, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 my-custom-class', 'required': true}}) }}
+        {{ form_errors(EditProductForm.price, {'attr': {'class': 'my-custom-class'}}) }}
+    </div>
+
+    <div class="flex justify-center">
+        {{ form_widget(EditProductForm.edit, {'label': 'Edit', 'attr': {'class': 'text-white bg-[#74B0E1] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'}}) }}    
+    </div>
+    </form>
+    {{ form_end(EditProductForm) }}
+
+
+    </div>
+    </div>
+    </div>
+        {% endblock %}
+    </body>
+</html>

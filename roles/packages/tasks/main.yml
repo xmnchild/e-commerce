@@ -1,0 +1,25 @@
+---
+- name: Installing packages
+  ansible.builtin.package:
+    name:
+      - vim
+      - git
+      - tree
+      - htop
+      - curl
+      - emacs
+      - net-tools
+      - sudo
+      - make
+      - unzip
+      - python3
+      - python3-pip
+      - ntpdate
+      - ca-certificates
+      - apt-transport-https
+      - software-properties-common
+      - wget
+      - curl
+      - lsb-release
+    state: present
+    update_cache: yes
